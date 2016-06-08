@@ -1,3 +1,9 @@
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ * @flow
+ */
+
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -6,25 +12,16 @@ import {
   View
 } from 'react-native';
 
-//import {Button} from './Button';
-var Button = require('react-native-button');
 
 class kozo extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Button
-          style={{fontSize: 20, color: 'green'}}
-          styleDisabled={{color: 'red'}}
-          onPress={this._handlePress}
-        >
-          Say!
-        </Button>
+        <Text style={styles.welcome}>
+          Welcome to React Native!
+        </Text>
       </View>
     );
-  } // render
-  _handlePress(event) {
-    console.log('Pressed!');
   }
 }
 
