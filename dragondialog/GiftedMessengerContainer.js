@@ -16,6 +16,8 @@ import {
 var GiftedMessenger = require('react-native-gifted-messenger');
 var Communications = require('react-native-communications');
 
+var BotName = 'Humix-Dragon';
+
 
 var STATUS_BAR_HEIGHT = Navigator.NavigationBar.Styles.General.StatusBarHeight;
 if (Platform.OS === 'android') {
@@ -46,7 +48,7 @@ class GiftedMessengerContainer extends Component {
 
     setTimeout(() => {
       this.setState({
-        typingMessage: 'React-Bot is typing a message...',
+        typingMessage: BotName + ' is typing a message...',
       });
     }, 1000); // simulating network
 
@@ -59,8 +61,8 @@ class GiftedMessengerContainer extends Component {
 
     setTimeout(() => {
       this.handleReceive({
-        text: 'Hello Awesome Developer',
-        name: 'React-Bot',
+        text: 'Hello ',
+        name: BotName,
         //image: {uri: 'https://facebook.github.io/react/img/logo_og.png'},
         image: {uri: 'http://humix-gamma.mybluemix.net/assets/images/IBM_IoT_cloud2.png'},
         position: 'left',
@@ -78,7 +80,7 @@ class GiftedMessengerContainer extends Component {
     return [
       {
         text: 'Ask me something.',
-        name: 'React-Bot',
+        name: BotName,
         //image: {uri: 'https://facebook.github.io/react/img/logo_og.png'},
         image: {uri: 'http://humix-gamma.mybluemix.net/assets/images/IBM_IoT_cloud2.png'},
         position: 'left',
@@ -141,8 +143,8 @@ class GiftedMessengerContainer extends Component {
     // for now, echo user input
     setTimeout(() => {
       this.handleReceive({
-        text: 'You typed: ' + message.text,
-        name: 'React-Bot',
+        text: 'Hi ' + message.name + ', You typed: \n' + message.text,
+        name: BotName,
         //image: {uri: 'https://facebook.github.io/react/img/logo_og.png'},
         image: {uri: 'http://humix-gamma.mybluemix.net/assets/images/IBM_IoT_cloud2.png'},
         position: 'left',
@@ -171,7 +173,7 @@ class GiftedMessengerContainer extends Component {
     var earlierMessages = [
       {
         text: 'React Native enables you to build world-class application experiences on native platforms using a consistent developer experience based on JavaScript and React. https://github.com/facebook/react-native',
-        name: 'React-Bot',
+        name: BotName,
         //image: {uri: 'https://facebook.github.io/react/img/logo_og.png'},
         image: {uri: 'http://humix-gamma.mybluemix.net/assets/images/IBM_IoT_cloud2.png'},
         position: 'left',
@@ -238,7 +240,7 @@ class GiftedMessengerContainer extends Component {
         loadEarlierMessagesButton={!this.state.allLoaded}
         onLoadEarlierMessages={this.onLoadEarlierMessages.bind(this)}
 
-        senderName='Awesome Developer'
+        senderName='Terry'
         senderImage={null}
         onImagePress={this.onImagePress}
         displayNames={true}

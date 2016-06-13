@@ -1,4 +1,4 @@
-rootProject.name = 'GiftedMessengerExample'
+rootProject.name = 'HumixChatbot'
 
 include ':app'
 include ':ExtraDimensions', ':app'
