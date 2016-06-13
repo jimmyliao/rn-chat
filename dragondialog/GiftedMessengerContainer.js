@@ -41,6 +41,8 @@ class GiftedMessengerContainer extends Component {
       allLoaded: false,
     };
 
+    this.msgbot = null;
+
   }
 
   componentDidMount() {
@@ -48,6 +50,10 @@ class GiftedMessengerContainer extends Component {
 
     this._isMounted = true;
 
+    //this.msgbot = this.clientWithWebSocket(this, 'localhost');
+    this.msgbot = this.clientWithWebSocket(this, 'dragon-think.mybluemix.net');
+
+/*
     setTimeout(() => {
       this.setState({
         typingMessage: BotName + ' is typing a message...',
@@ -72,11 +78,102 @@ class GiftedMessengerContainer extends Component {
         uniqueId: Math.round(Math.random() * 10000), // simulating server-side unique id generation
       });
     }, 3300); // simulating network
+*/
   }
 
   componentWillUnmount() {
     this._isMounted = false;
   }
+
+  ///// WebSocket
+  clientWithWebSocket(msgbot, target_host) {
+    console.log("client uses WebSocket lib");
+    var sub_uri = 'node-red/rn/dialog';
+    // var sub_uri = '';
+
+    if (typeof target_host === 'undefined' || target_host == 'localhost') {
+      target_host = 'ws://192.168.0.12:3000/' + sub_uri;
+    } else {
+      //target_host = 'ws://dxmap-server.mybluemix.net' + '/' + sub_uri;
+      target_host = 'ws://'+ target_host + '/' + sub_uri;
+    }
+    console.log('connect to server: ' + target_host);
+
+    //var client = new WebSocket("ws://localhost:3000/", "echo-protocol");
+    //var client = new WebSocket(target_host, "echo-protocol");
+    var client = new WebSocket(target_host);
+
+    client.onerror = function(ev) {
+        console.log('[onerror] Connection Error - ' + ev.code);
+    };
+
+    client.onopen = function() {
+      var msg_connected = 'Client Connected';
+        console.log('[onopen] WebSocket Client Connected');
+
+        setTimeout(() => {
+          msgbot.handleReceive({
+            text: msg_connected,
+            name: BotName,
+            //image: {uri: 'https://facebook.github.io/react/img/logo_og.png'},
+            image: {uri: 'http://humix-gamma.mybluemix.net/assets/images/IBM_IoT_cloud2.png'},
+            position: 'left',
+            date: new Date(),
+            uniqueId: Math.round(Math.random() * 10000), // simulating server-side unique id generation
+          });
+        }, 500); // simulating network
+
+        var helloActionMsg = "hello";
+        // client.send(helloActionMsg);
+        //this.msgbot.send(message.text);
+    };
+
+    client.onclose = function() {
+      var msg_disconnected = 'Client Closed';
+        console.log('[onclose]  echo-protocol Client Closed');
+        setTimeout(() => {
+          msgbot.handleReceive({
+            text: msg_disconnected,
+            name: BotName,
+            //image: {uri: 'https://facebook.github.io/react/img/logo_og.png'},
+            image: {uri: 'http://humix-gamma.mybluemix.net/assets/images/IBM_IoT_cloud2.png'},
+            position: 'left',
+            date: new Date(),
+            uniqueId: Math.round(Math.random() * 10000), // simulating server-side unique id generation
+          });
+        }, 500); // simulating network
+
+    };
+
+    client.onmessage = function(message) {
+      // handle incoming message
+      // { type: 'message', data: 'hi' }
+        try {
+          console.log(message);
+          // var json = JSON.parse( JSON.stringify(message) );
+          console.log(message.data);
+
+        } catch (e) {
+           console.log('This doesn\'t look like a valid JSON: ', message.data);
+           return;
+        }
+
+        msgbot.handleReceive({
+          text: message.data,
+          name: BotName,
+          image: {uri: 'http://humix-gamma.mybluemix.net/assets/images/IBM_IoT_cloud2.png'},
+          position: 'left',
+          date: new Date(),
+          uniqueId: Math.round(Math.random() * 10000), // simulating server-side unique id generation
+        });
+
+    };
+
+
+    return client;
+  }
+
+  ///// end of WebSocket
 
   getInitialMessages() {
     return [
@@ -134,6 +231,7 @@ class GiftedMessengerContainer extends Component {
 
     // Your logic here
     // Send message.text to your server
+    this.msgbot.send(message.text);
 
     message.uniqueId = Math.round(Math.random() * 10000); // simulating server-side unique id generation
     this.setMessages(this._messages.concat(message));
