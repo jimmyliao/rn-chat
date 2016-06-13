@@ -44,6 +44,8 @@ class GiftedMessengerContainer extends Component {
   }
 
   componentDidMount() {
+    console.log('########## componentDidMount()');
+
     this._isMounted = true;
 
     setTimeout(() => {
@@ -128,6 +130,7 @@ class GiftedMessengerContainer extends Component {
   }
 
   handleSend(message = {}) {
+    console.log('########## handleSend()');
 
     // Your logic here
     // Send message.text to your server
@@ -200,6 +203,7 @@ class GiftedMessengerContainer extends Component {
   }
 
   handleReceive(message = {}) {
+    console.log('########## handleReceive()');
     // make sure that your message contains :
     // text, name, image, position: 'left', date, uniqueId
     this.setMessages(this._messages.concat(message));
